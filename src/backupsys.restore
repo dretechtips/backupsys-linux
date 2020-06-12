@@ -1,0 +1,35 @@
+#!/bin/sh
+
+if [ [ $EUID != 0 ] ]
+then
+    echo "Error: System scripts require root user privilege"
+    exit 1
+fi
+
+echo "NOTE: This scripts only works if your system is already mounted and chrooted."
+echo "Currently probing for config file."
+echo "Please enter the home folder that backsys was installed to"
+
+HOME_DIR=null
+
+while [ ! -d `/home/${HOME_DIR}` ]; do
+    read INPUT_DIR
+    if [ -d `/home/${INPUT_DIR}` ]
+    then
+      HOME_DIR=INPUT_DIR
+    else
+      echo "Error: Invalid home directory. Please try again."
+    fi
+done
+
+
+if [ ! -d `/home/${HOME_DIR}/.config/backupsys.config` ]
+then
+  echo "No configuration found"
+  exit 1
+fi
+
+source `/home/${HOME_DIR}/.config/backupsys.config`
+
+rsync -aAXv --delete $TO /
+echo "System restored! It is safe to reboot!"

@@ -2,17 +2,17 @@
 
 if [! -d "$HOME/.config/backupsys.config"]
 then
-    echo "Invalid config please reinstall again."
-    exit 0
+    echo "No config found please reinstall again."
+    exit 1
 fi
 
 source $HOME/.config/backupsys.config
 
-if [ ! -d "$FROM" ] || [ ! -d "$TO" ]
+if [ ! -d "$TO" ]
 then
   echo "Invalid FROM or TO"
   echo "Please check the config again"
-  exit 0
+  exit 1
 fi
 
 
@@ -33,4 +33,4 @@ case $READY in
     ;;
 esac
 
-rsync -aAXv --delete --exclude={'/dev/*','/proc/*','/sys/*','/tmp/*','/run/*','/mnt/*','/media/*','/home/*','/lost+found/*'} $FROM $TO
+setsid rsync -aAXv --delete --exclude={'/dev/*','/proc/*','/sys/*','/tmp/*','/run/*','/mnt/*','/media/*','/home/*','/lost+found/*'} / $TO > /dev/null 2>&1 && echo "Backup completed!" & disown
