@@ -1,7 +1,12 @@
 #!/bin/sh
 
-FROM=/
-TO=~/Network_Drive/andre/Personal/Backups/Desktop
+if [! -d "$HOME/.config/backupsys.config"]
+then
+    echo "Invalid config please reinstall again."
+    exit 0
+fi
+
+source $HOME/.config/backupsys.config
 
 if [ ! -d "$FROM" ] || [ ! -d "$TO" ]
 then
