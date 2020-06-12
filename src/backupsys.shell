@@ -1,0 +1,31 @@
+#!/bin/sh
+
+FROM=/
+TO=~/Network_Drive/andre/Personal/Backups/Desktop
+
+if [ ! -d "$FROM" ] || [ ! -d "$TO" ]
+then
+  echo "Invalid FROM or TO"
+  echo "Please check the config again"
+  exit 0
+fi
+
+
+echo 'Initalizing a system-wide backup. This will not save user-data in anyway.'
+echo 'Would you like to backup to this directory...'
+echo 'TO= ' $TO
+echo 'Please make sure that this is the correct directory! [yes/no]'
+
+read READY
+
+case $READY in
+  yes | YES | y)
+    echo "Starting backup..."
+    ;;
+  *)
+    echo "Closing..."
+    exit 0
+    ;;
+esac
+
+rsync -aAXv --delete --exclude={'/dev/*','/proc/*','/sys/*','/tmp/*','/run/*','/mnt/*','/media/*','/home/*','/lost+found/*'} $FROM $TO
