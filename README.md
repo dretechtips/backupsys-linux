@@ -1,7 +1,7 @@
-# Backup-Sys
+# backupsys-linux
 ___
 A simple linux based backup utility.
 
-## Configuration
+## configure
 ___
 Modify the source config file and reinstall.
